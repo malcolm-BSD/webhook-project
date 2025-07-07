@@ -5,6 +5,7 @@ import openai
 import json
 import re
 import sys
+import os
 
 def get_industry_option_id(api_key: str, industry_label: str) -> str | None:
     """Look up the dropdown option ID for the given industry label."""
@@ -57,9 +58,8 @@ def main():
 
 
     # === USER CONFIGURATION ===
-    with open("llave2.txt", "r") as key_file:
-        OPENAI_API_KEY = key_file.read().strip()
-        PIPEDRIVE_API_KEY = key_file.read().strip()
+    OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+    PIPEDRIVE_API_KEY = os.environ["PIPEDRIVE_API_KEY"]
 
     COMPANY_NAME = "Shell"
     LOCATION = "Amsterdam, Netherlands"

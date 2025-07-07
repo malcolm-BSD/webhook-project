@@ -1,3 +1,5 @@
 flask
 pydantic
 aiofiles
+requests
+openai
