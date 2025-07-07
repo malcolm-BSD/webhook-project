@@ -57,8 +57,10 @@ def main():
 
 
     # === USER CONFIGURATION ===
-    OPENAI_API_KEY = "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"
-    PIPEDRIVE_API_KEY = "ef049254408981a6a8c7b1d1aeb6e78ba767127b"
+    with open("llave.txt", "r") as key_file:
+        OPENAI_API_KEY = key_file.read().strip()
+        PIPEDRIVE_API_KEY = key_file.read().strip()
+
     COMPANY_NAME = "Shell"
     LOCATION = "Amsterdam, Netherlands"
 
