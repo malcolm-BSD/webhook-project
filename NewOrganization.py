@@ -57,7 +57,7 @@ def main():
 
 
     # === USER CONFIGURATION ===
-    with open("llave.txt", "r") as key_file:
+    with open("llave2.txt", "r") as key_file:
         OPENAI_API_KEY = key_file.read().strip()
         PIPEDRIVE_API_KEY = key_file.read().strip()
 
