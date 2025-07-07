@@ -5,4 +5,4 @@ services:
     buildCommand: ""
     startCommand: python webhook_server.py
     plan: free
-    region: texas
+    region: oregon
