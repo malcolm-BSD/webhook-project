@@ -3,3 +3,4 @@ pydantic
 aiofiles
 requests
 openai
+gunicorn
