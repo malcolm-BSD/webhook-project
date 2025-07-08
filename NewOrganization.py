@@ -46,23 +46,23 @@ def main():
         print("Expected a path to a JSON file")
         return
 
-    json_file = sys.argv[1]
-    try:
-        with open(json_file, 'r') as f:
-            data = json.load(f)
-        print(f"Processed input: {data}")
-        # Do something meaningful with `data`...
-    except Exception as e:
-        print(f"Error reading JSON file: {e}", file=sys.stderr)
-        sys.exit(1)
+#    json_file = sys.argv[1]
+#   try:
+#        with open(json_file, 'r') as f:
+#            data = json.load(f)
+#        print(f"Processed input: {data}")
+#        # Do something meaningful with `data`...
+#    except Exception as e:
+#        print(f"Error reading JSON file: {e}", file=sys.stderr)
+#        sys.exit(1)
 
 
     # === USER CONFIGURATION ===
     OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
     PIPEDRIVE_API_KEY = os.environ["PIPEDRIVE_API_KEY"]
 
-    COMPANY_NAME = "Shell"
-    LOCATION = "Amsterdam, Netherlands"
+    COMPANY_NAME = "Sage Geosystems"
+    LOCATION = "Houston, Texas, USA"
 
     # === STEP 0: Find out what the custom fields are====
     url = f"https://api.pipedrive.com/v1/organizationFields?api_token={PIPEDRIVE_API_KEY}"
@@ -90,10 +90,10 @@ def main():
     = LinkedIn Profile URL
     - Summary of what they do
     - Include their activities in geothermal energy, in a detailed narrative of:
-        - Geographic areas where Shell is or was active in geothermal
+        - Geographic areas where \"{COMPANY_NAME}\" is or was active in geothermal
         - Types of geothermal involvement (electricity, heating, R&D, etc.)
         - Key partners and projects
-        - Shell’s role and project status (e.g. active, exited)
+        - \"{COMPANY_NAME}\"’s role and project status (e.g. active, exited)
         - Strategic rationale behind its decisions
     Format the content of geothermal_activity as a well-structured multiline string.
     Return it in JSON format.
