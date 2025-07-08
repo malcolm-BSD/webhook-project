@@ -42,9 +42,9 @@ def add_note_to_org(org_id, api_key, message):
 
 def main():
 
-    if len(sys.argv) < 2:
-        print("Expected a path to a JSON file")
-        return
+#    if len(sys.argv) < 2:
+#        print("Expected a path to a JSON file")
+#        return
 
 #    json_file = sys.argv[1]
 #   try:
