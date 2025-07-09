@@ -177,7 +177,6 @@ def main():
     else:
         employee_count = "0"  # Default to 0 if not valid
 
-    pprint.pprint("structured_data = " + structured_data)
     organization_update = {
         "visible_to": 3,  # Optional: 3 = Entire company
         "industry": structured_data.get("industry"),
