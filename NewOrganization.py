@@ -6,6 +6,25 @@ import json
 import re
 import sys
 import os
+import logging
+import pprint
+
+
+# Configure logging to both console (stdout) and file
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Console handler (Render picks this up)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(console_handler)
+
+# Optional: file handler
+file_handler = logging.FileHandler("webhook.log")
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
 
 def get_industry_option_id(api_key: str, industry_label: str) -> str | None:
     """Look up the dropdown option ID for the given industry label."""
@@ -42,19 +61,23 @@ def add_note_to_org(org_id, api_key, message):
 
 def main():
 
-#    if len(sys.argv) < 2:
-#        print("Expected a path to a JSON file")
-#        return
+    """Main function to process the JSON input and update Pipedrive."""
+    logging.info("Starting NewOrganization script...")
+    if len(sys.argv) < 2:
+        print("Expected a path to a JSON file")
+        return
 
-#    json_file = sys.argv[1]
-#   try:
-#        with open(json_file, 'r') as f:
-#            data = json.load(f)
-#        print(f"Processed input: {data}")
-#        # Do something meaningful with `data`...
-#    except Exception as e:
-#        print(f"Error reading JSON file: {e}", file=sys.stderr)
-#        sys.exit(1)
+    json_file = sys.argv[1]
+    try:
+        with open(json_file, 'r') as f:
+            data = json.load(f)
+        logging.info(f"Processed input: {data}")
+        pprint.pprint(data)  # Pretty-print the data for debugging
+        # Do something meaningful with `data`...
+
+    except Exception as e:
+        print(f"Error reading JSON file: {e}", file=sys.stderr)
+        sys.exit(1)
 
 
     # === USER CONFIGURATION ===

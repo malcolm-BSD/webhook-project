@@ -9,6 +9,71 @@ import tempfile
 import logging
 import sys
 
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
+
+
+class Address(BaseModel):
+    country: Optional[str]
+    formatted_address: Optional[str]
+    locality: Optional[str]
+    sublocality: Optional[str]
+    subpremise: Optional[str]
+    route: Optional[str]
+    street_number: Optional[str]
+    admin_area_level_1: Optional[str]
+    admin_area_level_2: Optional[str]
+    postal_code: Optional[str]
+    value: Optional[str]
+
+
+class CustomFields(BaseModel):
+    # Use actual field keys as needed; this is just one example:
+    field_48fb: Optional[Any] = Field(None, alias="48fb74b3799b461f0153614366a1c589bf1a2fb0")
+
+
+class Data(BaseModel):
+    add_time: Optional[str]
+    address: Optional[Address]
+    country_code: Optional[str]
+    custom_fields: Optional[CustomFields]
+    id: int
+    label: Optional[str]
+    label_ids: List[Any]
+    name: str
+    owner_id: int
+    picture_id: Optional[Any]
+    update_time: Optional[str]
+    visible_to: Optional[str]
+
+
+class Meta(BaseModel):
+    action: str
+    company_id: str
+    correlation_id: str
+    entity_id: str
+    entity: str
+    id: str
+    is_bulk_edit: bool
+    timestamp: str
+    type: str
+    user_id: str
+    version: str
+    webhook_id: str
+    webhook_owner_id: str
+    change_source: Optional[str]
+    permitted_user_ids: Optional[List[str]]
+    attempt: Optional[int]
+    host: Optional[str]
+
+
+class WebhookPayload(BaseModel):
+    data: Data
+    meta: Meta
+    previous: Optional[Any]
+
+
+
 # Configure logging to both console (stdout) and file
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -85,6 +150,13 @@ def handle_webhook():
 
         # Validate input
         validated = WebhookPayload(**payload)
+
+        # Now you can safely access fields
+        org_name = validated.data.name
+        country = validated.data.address.country if validated.data.address else None
+
+        logging.info(f"Validated organization name: {org_name}")
+        logging.info(f"Country: {country}")
 
         # Run the script asynchronously
         loop = asyncio.new_event_loop()
