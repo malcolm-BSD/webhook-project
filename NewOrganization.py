@@ -75,6 +75,15 @@ def main():
         pprint.pprint(data)  # Pretty-print the data for debugging
         # Do something meaningful with `data`...
 
+        structure = data.get("data", {})
+        address = structure.get("address", {})
+
+        company_name = structure.get("name", "Unknown")
+        city = address.get("locality", "Unknown")
+        country = address.get("country", "Unknown")
+
+        logging.info(f"Company: {company_name}, City: {city}, Country: {country}")
+
     except Exception as e:
         print(f"Error reading JSON file: {e}", file=sys.stderr)
         sys.exit(1)
@@ -84,8 +93,8 @@ def main():
     OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
     PIPEDRIVE_API_KEY = os.environ["PIPEDRIVE_API_KEY"]
 
-    COMPANY_NAME = "Shell"
-    LOCATION = "Amsterdam, Netherlands"
+    COMPANY_NAME = company_name
+    LOCATION = city + ", " + country
 
     # === STEP 0: Find out what the custom fields are====
     url = f"https://api.pipedrive.com/v1/organizationFields?api_token={PIPEDRIVE_API_KEY}"
@@ -122,6 +131,8 @@ def main():
     Return it in JSON format.
     Ensure all invalid JSON characters in string fields are escaped to produce valid JSON.
     """
+
+    logger.info("Prompt: %s", prompt)
 
     # === STEP 3: Call OpenAI API (using openai>=1.0.0 syntax) ===
     client = openai.OpenAI(api_key=OPENAI_API_KEY)
@@ -166,6 +177,7 @@ def main():
     else:
         employee_count = "0"  # Default to 0 if not valid
 
+    pprint.pprint("structured_data = " + structured_data)
     organization_update = {
         "visible_to": 3,  # Optional: 3 = Entire company
         "industry": structured_data.get("industry"),
