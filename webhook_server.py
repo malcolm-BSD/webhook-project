@@ -53,6 +53,9 @@ async def run_script_with_json(json_data: dict):
 
         logging.info(f"Calling script with data file: {tmp_file_path}")
 
+        #write the tmp file to the screen
+        logging.info(f"Temporary file content: {json_data}")
+
         process = await asyncio.create_subprocess_exec(
             "python", SCRIPT_PATH, tmp_file_path,
             stdout=asyncio.subprocess.PIPE,
@@ -64,6 +67,7 @@ async def run_script_with_json(json_data: dict):
         if process.returncode != 0:
             raise RuntimeError(f"Script failed: {stderr.decode().strip()}")
 
+        logging.info(f"Script completed successfully with output: {stdout.decode().strip()}")
         return stdout.decode().strip()
 
     finally:
