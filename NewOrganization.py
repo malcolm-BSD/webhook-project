@@ -61,8 +61,8 @@ def main():
     OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
     PIPEDRIVE_API_KEY = os.environ["PIPEDRIVE_API_KEY"]
 
-    COMPANY_NAME = "Sage Geosystems"
-    LOCATION = "Houston, Texas, USA"
+    COMPANY_NAME = "Shell"
+    LOCATION = "Amsterdam, Netherlands"
 
     # === STEP 0: Find out what the custom fields are====
     url = f"https://api.pipedrive.com/v1/organizationFields?api_token={PIPEDRIVE_API_KEY}"
