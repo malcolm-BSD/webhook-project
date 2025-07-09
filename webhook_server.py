@@ -6,15 +6,33 @@ import json
 import os
 import subprocess
 import tempfile
+import logging
+import sys
+
+# Configure logging to both console (stdout) and file
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Console handler (Render picks this up)
+console_handler = logging.StreamHandler(sys.stdout)
+console_handler.setLevel(logging.INFO)
+console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(console_handler)
+
+# Optional: file handler
+file_handler = logging.FileHandler("webhook.log")
+file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
 
 app = Flask(__name__)
 
 # Setup logging
-logging.basicConfig(
-    filename='webhook.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+#logging.basicConfig(
+#    filename='webhook.log',
+#    level=logging.INFO,
+#    format='%(asctime)s - %(levelname)s - %(message)s'
+#)
 
 # Path to the script you want to run
 SCRIPT_PATH = os.path.abspath("NewOrganization.py")
@@ -59,7 +77,7 @@ def handle_webhook():
     """
     try:
         payload = request.get_json()
-        logging.info(f"Received payload: {payload}")
+        logging.info("Webhook triggered with payload: %s", payload)
 
         # Validate input
         validated = WebhookPayload(**payload)
