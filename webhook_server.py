@@ -1,3 +1,5 @@
+import pprint
+
 from flask import Flask, request, jsonify
 from pydantic import BaseModel, ValidationError
 import logging
@@ -11,6 +13,12 @@ import sys
 
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
+
+
+class WebhookPayload(BaseModel):
+    data: Dict[str, Any]
+    meta: Dict[str, Any]
+    previous: Optional[Any] = None
 
 
 class Address(BaseModel):
@@ -67,12 +75,6 @@ class Meta(BaseModel):
     host: Optional[str]
 
 
-class WebhookPayload(BaseModel):
-    data: Data
-    meta: Meta
-    previous: Optional[Any]
-
-
 
 # Configure logging to both console (stdout) and file
 logger = logging.getLogger()
@@ -101,11 +103,6 @@ app = Flask(__name__)
 
 # Path to the script you want to run
 SCRIPT_PATH = os.path.abspath("NewOrganization.py")
-
-# Define your expected JSON schema using Pydantic
-class WebhookPayload(BaseModel):
-    example: str
-    # Add other fields here as needed
 
 async def run_script_with_json(json_data: dict):
     """
@@ -151,12 +148,7 @@ def handle_webhook():
         # Validate input
         validated = WebhookPayload(**payload)
 
-        # Now you can safely access fields
-        org_name = validated.data.name
-        country = validated.data.address.country if validated.data.address else None
-
-        logging.info(f"Validated organization name: {org_name}")
-        logging.info(f"Country: {country}")
+        pprint.pprint(validated)
 
         # Run the script asynchronously
         loop = asyncio.new_event_loop()
